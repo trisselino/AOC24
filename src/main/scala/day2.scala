@@ -7,34 +7,27 @@ def day2(): Unit = {
     val values: Array[Array[Int]] = lines.map(x => x.split(" ").map(_.toInt))
 
     val faultyLines = ArrayBuffer[Array[Int]]()
-    val reportsCount: Int = values.map { arr =>
+
+    val reportsCount: Int = values.map { line =>
         // if for all 2 adjacent elements of the array the cond. match, then sum else return 0
-        if (lineIsSafe(arr))
+        if (lineIsSafe(line))
             1
         else
-            faultyLines += arr
+            faultyLines += line
             0
     }.sum
-    println(reportsCount)
+    printf("Reportscount: %d\n", reportsCount)
 
-    val fixedLinesCount = faultyLines.map { arr =>
-        val buffer = arr.toBuffer
-        getFirstUnsafeElement(arr).foreach(buffer.remove)
-        if (lineIsSafe(buffer.toArray))
-            1
-        else
-            0
-    }.sum
-
-    println(fixedLinesCount)
-    println(fixedLinesCount + reportsCount)
-}
-
-def getFirstUnsafeElement(line: Array[Int]): Option[Int] = {
-    line.sliding(2).zipWithIndex.collectFirst {
-        case (Array(x, y), index) if !(1 <= math.abs(x - y) && math.abs(x - y) <= 3) => index
-        case (Array(x, y), index) if index > 0 && ((line(index - 1) < x && x > y) || (line(index - 1) > x && x < y)) => index
+    val fixedLinesCount = faultyLines.count { line =>
+        line.indices.exists { i =>
+            val buffer = line.toBuffer
+            buffer.remove(i)
+            lineIsSafe(buffer.toArray)
+        }
     }
+
+    printf("Fixed lines: %d\n", fixedLinesCount)
+    printf("Together: %d\n", fixedLinesCount + reportsCount)
 }
 
 def lineIsSafe(line:Array[Int]): Boolean =
