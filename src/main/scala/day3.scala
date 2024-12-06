@@ -9,7 +9,7 @@ def day3() : Unit =
     val mulMatches = input.flatMap(line => inputRegex.findAllMatchIn(line).map(x => x.matched)) // (_.matched)
 
     val valueRegex = """(\d{1,3})""".r
-    val values: Array[Int] = mulMatches.flatMap(str => valueRegex.findAllMatchIn(str).map(_.matched.toInt))
+    val values: Array[Int] = mulMatches.flatMap(valueRegex.findAllMatchIn(_).map(_.matched.toInt))
 
     val sum = values.grouped(2).collect{
         case Array(a,b) => a * b
