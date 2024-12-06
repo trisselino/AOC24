@@ -12,14 +12,21 @@ def day4(): Unit = {
             letterArray(i)(j) = input(i).charAt(j)
     }
 
-    var counter = 0
+    var xmasCounter = 0
+    var masCounter = 0
 
     for (i <- 0 until rows)
         for (j <- 0 until columns)
             if (letterArray(i)(j) == 'X')
-                counter += checkForXmas(i, j)
+                xmasCounter += checkForXmas(i, j)
 
-    printf("Counter: %d\n", counter)
+    for (i <- 0 until rows)
+        for (j <- 0 until columns)
+            if (letterArray(i)(j) == 'A')
+                masCounter += checkForMas(i, j)
+
+    printf("Xmas-Counter: %d\n", xmasCounter)
+    printf("Mas-Counter: %d\n", masCounter)
 }
 
 def checkForXmas(row: Int, column: Int): Int =
@@ -75,4 +82,31 @@ def checkForXmas(row: Int, column: Int): Int =
 
     temp
 
+def checkForMas(row: Int, column: Int): Int =
+    var temp = 0
 
+    if (row - 1 >= 0 && column + 1 < columns && row + 1 < rows && column - 1 >= 0) {
+        if (letterArray(row-1)(column+1) == 'M' && letterArray(row + 1)(column-1) == 'S')
+            if (letterArray(row-1)(column-1) == 'M' && letterArray(row+1)(column+1) == 'S')
+                temp += 1
+    }
+
+    if (row - 1 >= 0 && column + 1 < columns && row + 1 < rows && column - 1 >= 0) {
+        if (letterArray(row-1)(column+1) == 'S' && letterArray(row + 1)(column-1) == 'M')
+            if (letterArray(row-1)(column-1) == 'M' && letterArray(row+1)(column+1) == 'S')
+                temp += 1
+    }
+
+    if (row - 1 >= 0 && column + 1 < columns && row + 1 < rows && column - 1 >= 0) {
+        if (letterArray(row-1)(column+1) == 'M' && letterArray(row + 1)(column-1) == 'S')
+            if (letterArray(row-1)(column-1) == 'S' && letterArray(row+1)(column+1) == 'M')
+                temp += 1
+    }
+
+    if (row - 1 >= 0 && column + 1 < columns && row + 1 < rows && column - 1 >= 0) {
+        if (letterArray(row-1)(column+1) == 'S' && letterArray(row + 1)(column-1) == 'M')
+            if (letterArray(row-1)(column-1) == 'S' && letterArray(row+1)(column+1) == 'M')
+                temp += 1
+    }
+
+    temp
